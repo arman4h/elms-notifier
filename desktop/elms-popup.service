@@ -1,0 +1,20 @@
+# Install (see README):
+#   mkdir -p ~/.local/share/elms-popup ~/.config/systemd/user
+#   cp popup.py ~/.local/share/elms-popup/
+#   printf 'ELMS_WORKER_URL=https://...workers.dev\nELMS_KEY=your-admin-key\n' > ~/.config/elms-popup.env
+#   chmod 600 ~/.config/elms-popup.env
+#   cp elms-popup.service ~/.config/systemd/user/ && systemctl --user daemon-reload
+#   systemctl --user enable --now elms-popup
+[Unit]
+Description=eLMS desktop popups (Worker outbox -> notify-send)
+After=graphical-session.target network-online.target
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=%h/.config/elms-popup.env
+ExecStart=/usr/bin/python3 %h/.local/share/elms-popup/popup.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

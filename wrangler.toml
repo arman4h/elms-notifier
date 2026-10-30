@@ -1,0 +1,22 @@
+name = "elms-notifier"
+main = "src/index.ts"
+compatibility_date = "2025-06-01"
+
+# Check eLMS every 15 minutes (UTC cron). Free plan allows this comfortably.
+[triggers]
+crons = ["*/15 * * * *"]
+
+# Create with: npx wrangler kv namespace create STATE   -> paste the id below
+[[kv_namespaces]]
+binding = "STATE"
+id = "a4398cafc8f54f7cac967905028627d5"
+
+[vars]
+MOODLE_URL = "https://elms.uiu.ac.bd"   # no trailing slash, no /login
+NTFY_SERVER = "https://ntfy.sh"
+TIMEZONE = "Asia/Dhaka"
+TZ_OFFSET_HOURS = "6"
+QUIET_START = "23"      # silent notifications from 23:00 ...
+QUIET_END = "7"         # ... until 07:00 (Dhaka time)
+TRACK_CONTENT = "true"  # "false" = calendar only
+# COURSE_IDS = "101,102,205"   # optional allowlist (see /diag for ids)
